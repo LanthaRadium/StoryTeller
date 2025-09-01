@@ -96,18 +96,6 @@ Open the URL printed in the terminal (default `http://127.0.0.1:7860`) and:
 
 ---
 
-## Screenshots / Demo
-
-- Add a UI screenshot at `doc/ui.png` and reference it here:
-  
-```
-![Gradio UI](doc/ui.png)
-```
-
-- (Optional) short GIF demo of the story flow
-
----
-
 ## Roadmap (Next Iterations Informed by Interviews)
 
 - [ ] **Deployment**: fully dockerize the entire application 
