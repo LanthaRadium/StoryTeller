@@ -1,0 +1,8 @@
+
+# Ignore these folders
+generated
+tests
+.gradio
+doc
+__pycache__
+.vscode
