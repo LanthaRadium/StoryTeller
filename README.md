@@ -5,20 +5,20 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **NOTICE**  
-> This repository will continue to evolve based on feedback gathered during my bachelor’s thesis interviews (teachers, researchers, and software engineers).  
-> Planned upgrades include improved validation, UX refinements for children (ages 5–8), and more modular audio controls. See **Roadmap** below.
+> This repository will continue to evolve based on feedback gathered during my bachelor’s thesis interviews.  
+> Planned upgrades include improved narration, UX refinements for children (ages 5–8), and more control of the story options. See **Roadmap** below.
 
-A modular, end-to-end **AI storytelling application** that generates short children’s stories, narrates them with TTS, and layers background music. Built as a research-driven demo to explore **promptable, swappable components** in an AI pipeline.
+A modular, end-to-end **AI storytelling application** that generates short children’s stories, narrates them with TTS, and adds small music clips. Built as a research-driven demo to explore the usage of AI for creating and narrating children's stories.
 
 ---
 
 ## Highlights (Portfolio Summary)
 
-- ✨ **Metadata-driven prompts:** users choose **setting**, **characters**, and **themes**
+- ✨ **Metadata-driven prompts:** users choose a **setting**, up to 3 **characters**, and a **theme**
 - 🧠 **LLM story generation:** Llama 3.1 with a **three-act structure**
 - ✅ **Quality gate:** readability & word-count checks (TextStat), basic safety filtering
 - 🔊 **Narration:** MeloTTS voice generation
-- 🎵 **Music:** MusicGen-Small background loops per scene
+- 🎵 **Music:** MusicGen-Small music transition clips
 - 🧪 **Modular by design:** each stage can be replaced independently
 - 🖥️ **Gradio UI:** simple interface to run the whole pipeline
 
@@ -33,7 +33,7 @@ app/
   story_gen.py          # Llama 3.1 story generation
   tts_gen.py            # MeloTTS narration
   music_gen.py          # MusicGen background music
-  combine_audio.py      # merge narration + music with gain controls
+  combine_audio.py      # merge narration + music
 data/
   frontend_metadata.json
   prompts/              # story + music prompt templates
@@ -42,13 +42,15 @@ doc/
   summary.txt
 generated/              # (gitignored) outputs
   stories/              # .txt
-  narrations/           # .wav/.mp3
-  music/                # .wav/.mp3
+  narrations/           # .wav
+  music/                # .wav
   final_audio/          # mixed outputs
 licenses/
   llama3_1_license.txt
   melotts_license.txt
   musicgen_license.txt
+thesis/
+  BachelorThesis_MCT_Lara_Mestdagh.pdf
 tests/                  # optional test scripts (gitignored)
 ```
 
@@ -57,6 +59,7 @@ tests/                  # optional test scripts (gitignored)
 ## Requirements
 
 - **Python 3.10+**
+- **Docker**
 - **ffmpeg** available on PATH (for audio processing)
 - (Optional) **CUDA** for faster inference with PyTorch
 - Access to **Llama 3.1** (e.g., via **Ollama** or your preferred provider)
@@ -81,8 +84,8 @@ python -m venv .venv
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4) (optional) fetch local model with Ollama
-# ollama pull llama3.1
+# 4) fetch local model with Ollama
+ollama pull llama3.1
 
 # 5) run the app
 python app/app.py
@@ -90,40 +93,6 @@ python app/app.py
 
 Open the URL printed in the terminal (default `http://127.0.0.1:7860`) and:
 1) choose setting/characters/themes, 2) click **Create your custom story!**, 3) listen & export.
-
----
-
-## Configuration
-
-Most switches live in **`app/config.py`**.
-
-Optional `.env` example:
-
-```
-# .env
-STORY_MODEL=llama3.1
-USE_OLLAMA=true
-MUSIC_MODEL=facebook/musicgen-small
-OUTPUT_DIR=generated
-READABILITY_TARGET=grade_3
-MUSIC_GAIN_DB=-12
-```
-
-- **Models**: swap LLM, TTS, or music backends without touching the UI code  
-- **Audio**: set narration/music sample rates and mix levels  
-- **Validation**: adjust readability targets and restricted-word filters
-
----
-
-## Validation & Testing
-
-- **Readability** with TextStat (Flesch, grade level) targeting ages **5–8**  
-- **Simple safety filters** for restricted words  
-- Optional tests (place in `tests/`):
-
-```bash
-pytest -q
-```
 
 ---
 
@@ -141,21 +110,10 @@ pytest -q
 
 ## Roadmap (Next Iterations Informed by Interviews)
 
-- [ ] **UX**: clearer child-friendly controls, preset “story packs”
-- [ ] **Validation**: richer checks (age-level vocabulary, theme consistency)
-- [ ] **Audio**: multi-scene timelines, smoother transitions, per-scene volume ramps
-- [ ] **Export**: storybook PDF with images + QR to audio
-- [ ] **Languages**: extend beyond English; simple accent & voice presets
-- [ ] **Modularity**: adapter layer for alternative LLMs/TTS/music engines
-
----
-
-## Troubleshooting
-
-- **No audio in final mix** → ensure `ffmpeg` is installed (`ffmpeg -version`)
-- **Very slow generation** → use smaller models, shorten story length, enable CUDA
-- **Music overpowers narration** → lower `MUSIC_GAIN_DB` in `combine_audio.py`
-- **TTS/model import errors** → check versions in `requirements.txt` and reinstall in a fresh venv
+- [ ] **Deployment**: fully dockerize the entire application 
+- [ ] **Audio**: improve TTS model and final speech
+- [ ] **UX**: clearer controls, dashboard for children or adults
+- [ ] **Music**: option to choose if user wants music, look into continous background track
 
 ---
 
@@ -174,7 +132,7 @@ Please review and comply with each model’s license before redistribution or co
 
 ## Acknowledgements
 
-This proof of concept was developed as part of my bachelor thesis on **modular AI pipelines for educational storytelling**.  
+This proof of concept was developed as part of my bachelor thesis on **usage of AI for children's stories creation and narration**.  
 Thanks to mentors and interview participants for insights on readability, pedagogy, and UX.
 
 ---
@@ -183,4 +141,4 @@ Thanks to mentors and interview participants for insights on readability, pedago
 
 **Lara Mestdagh** — AI Engineer  
 - GitHub: https://github.com/LanthaRadium  
-- LinkedIn: https://www.linkedin.com/in/<your-profile>
+- LinkedIn: https://www.linkedin.com/in/lara-mestdagh-077385309
